@@ -1,0 +1,6 @@
+main: dev.lksh.minecraft.plugins.timer.IndigestionTimer
+name: IndigestionTimer
+version: "1.0"
+api-version: "1.20"
+description: Timer for the lil_indigestion minecraft server
+author: SnailyLuke
