@@ -1,5 +1,6 @@
 package dev.lksh.minecraft.plugins.timer.db;
 
+import dev.lksh.minecraft.plugins.timer.IndigestionTimer;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,18 +9,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
-import dev.lksh.minecraft.plugins.timer.IndigestionTimer;
-
 public class SQLite extends Database {
   String dbname;
 
   public SQLite(IndigestionTimer instance) {
     super(instance);
 
-    dbname = plugin.getConfig().getString("SQLite.Filename", "timer_data"); // Set the table name here e.g player_kills
+    dbname =
+        plugin
+            .getConfig()
+            .getString("SQLite.Filename", "timer_data"); // Set the table name here e.g player_kills
   }
 
-  private final String createEventsTable = """
+  private final String createEventsTable =
+      """
       CREATE TABLE IF NOT EXISTS events (
         event_id TEXT NOT NULL PRIMARY KEY,
         event_name TEXT,
@@ -34,7 +37,8 @@ public class SQLite extends Database {
       );
       """;
 
-  private final String createPlayersTable = """
+  private final String createPlayersTable =
+      """
       CREATE TABLE IF NOT EXISTS event_players (
         event_id TEXT NOT NULL,
         player_uuid TEXT NOT NULL,
@@ -48,7 +52,8 @@ public class SQLite extends Database {
       );
       """;
 
-  private final String createPlayerTimesTable = """
+  private final String createPlayerTimesTable =
+      """
       CREATE TABLE IF NOT EXISTS event_times (
         event_id TEXT NOT NULL,
         player_uuid TEXT NOT NULL,
@@ -68,13 +73,19 @@ public class SQLite extends Database {
       """;
 
   // SQL creation stuff, You can leave the blow stuff untouched.
-  private Connection getSQLConnection() {
-    File dataFolder = new File(plugin.getDataFolder(), dbname + ".db");
-    if (!dataFolder.exists()) {
+  protected Connection getSQLConnection() {
+    if (!plugin.getDataFolder().exists()) {
+        plugin.getLogger().info("Creating data folder: " + plugin.getDataFolder().getName());
+      plugin.getDataFolder().mkdirs();
+    }
+
+    File dbFile = new File(plugin.getDataFolder(), dbname + ".db");
+    if (!dbFile.exists()) {
       try {
-        dataFolder.createNewFile();
+        plugin.getLogger().info("Attempting to create file: " + dbname + ".db");
+        dbFile.createNewFile();
       } catch (IOException e) {
-        plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
+        plugin.getLogger().severe("File write error: " + dbname + ".db -- " + e.getMessage());
       }
     }
     try {
@@ -82,12 +93,14 @@ public class SQLite extends Database {
         return connection;
       }
       Class.forName("org.sqlite.JDBC");
-      connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
+      connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
       return connection;
     } catch (SQLException ex) {
       plugin.getLogger().log(Level.SEVERE, "SQLite exception on initialize", ex);
     } catch (ClassNotFoundException ex) {
-      plugin.getLogger().log(Level.SEVERE, "You need the SQLite JDBC library. Google it. Put it in /lib folder.");
+      plugin
+          .getLogger()
+          .log(Level.SEVERE, "You need the SQLite JDBC library. Google it. Put it in /lib folder.");
     }
     return null;
   }
