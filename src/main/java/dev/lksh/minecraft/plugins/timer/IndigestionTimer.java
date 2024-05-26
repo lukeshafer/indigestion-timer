@@ -9,7 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.lksh.minecraft.plugins.timer.commands.CreateEventCommand;
 import dev.lksh.minecraft.plugins.timer.commands.SetEventNameCommand;
+import dev.lksh.minecraft.plugins.timer.commands.SetEventStartPositionCommand;
 import dev.lksh.minecraft.plugins.timer.commands.GetEventNameCommand;
+import dev.lksh.minecraft.plugins.timer.commands.SetEventEndPositionCommand;
 import dev.lksh.minecraft.plugins.timer.db.Database;
 import dev.lksh.minecraft.plugins.timer.db.SQLite;
 
@@ -22,6 +24,8 @@ public class IndigestionTimer extends JavaPlugin implements Listener {
     getCommand("createtimerevent").setExecutor(new CreateEventCommand(this));
     getCommand("settimereventname").setExecutor(new SetEventNameCommand(this));
     getCommand("gettimereventname").setExecutor(new GetEventNameCommand(this));
+    getCommand("settimereventstart").setExecutor(new SetEventStartPositionCommand(this));
+    getCommand("settimereventend").setExecutor(new SetEventEndPositionCommand(this));
 
     db = new SQLite(this);
     db.load();

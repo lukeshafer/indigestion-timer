@@ -17,6 +17,14 @@ commands:
     description: Gets the event name for an existing event
     usage: /gettimereventname <event-id>
     permission: indicards.gettimereventname
+  settimereventstart:
+    description: Sets the start position for a timer event
+    usage: /settimereventstart <event-id> [<margin>]
+    permission: indicards.settimereventstart
+  settimereventend:
+    description: Sets the start position for a timer event
+    usage: /settimereventend <event-id> [<margin>]
+    permission: indicards.settimereventend
 permissions:
   indicards.createtimerevent:
     description: Allows createtimerevent command
@@ -26,4 +34,10 @@ permissions:
     default: op
   indicards.gettimereventname:
     description: Allows gettimereventname command
+    default: op
+  indicards.settimereventstart:
+    description: Allows settimereventstart command
+    default: op
+  indicards.settimereventend:
+    description: Allows settimereventend command
     default: op

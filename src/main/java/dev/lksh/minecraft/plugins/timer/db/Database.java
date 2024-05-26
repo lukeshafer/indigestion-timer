@@ -1,6 +1,7 @@
 package dev.lksh.minecraft.plugins.timer.db;
 
 import dev.lksh.minecraft.plugins.timer.IndigestionTimer;
+import dev.lksh.minecraft.plugins.timer.types.TimerPosition;
 // YOU MUST IMPORT THE CLASS ERROR, AND ERRORS!!!
 import dev.lksh.minecraft.plugins.timer.types.TimerEvent;
 import java.sql.Connection;
@@ -102,6 +103,158 @@ public abstract class Database {
         } else {
           return "";
         }
+      }
+      return null;
+    } catch (SQLException ex) {
+      plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+    } finally {
+      try {
+        if (ps != null)
+          ps.close();
+        if (conn != null)
+          conn.close();
+      } catch (SQLException ex) {
+        plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
+      }
+    }
+    return null;
+  }
+
+  public void setStartPosition(String eventId, int posX, int posY, int posZ, int margin) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    try {
+      String statement = """
+            UPDATE events
+            SET start_x = ?,
+                start_y = ?,
+                start_z = ?,
+                start_margin = ?
+            WHERE event_id = ?
+          """;
+
+      conn = getSQLConnection();
+      ps = conn.prepareStatement(statement.trim());
+      ps.setInt(1, posX);
+      ps.setInt(2, posY);
+      ps.setInt(3, posZ);
+      ps.setInt(4, margin);
+      ps.setString(5, eventId);
+      ps.executeUpdate();
+    } catch (SQLException ex) {
+      plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+    } finally {
+      try {
+        if (ps != null)
+          ps.close();
+        if (conn != null)
+          conn.close();
+      } catch (SQLException ex) {
+        plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
+      }
+    }
+    return;
+  }
+
+  public TimerPosition getStartPosition(String eventId) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    try {
+      String statement = """
+          SELECT start_x, start_y, start_z, start_margin
+          FROM events
+          WHERE event_id = ?""";
+
+      conn = getSQLConnection();
+      ps = conn.prepareStatement(statement.trim());
+      ps.setString(1, eventId);
+      rs = ps.executeQuery();
+
+      int i = 0;
+      while (rs.next()) {
+        plugin.getLogger().info("in while loop, " + i++);
+        return new TimerPosition(
+            rs.getInt("start_x"),
+            rs.getInt("start_y"),
+            rs.getInt("start_z"),
+            rs.getInt("start_margin"));
+      }
+      return null;
+    } catch (SQLException ex) {
+      plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+    } finally {
+      try {
+        if (ps != null)
+          ps.close();
+        if (conn != null)
+          conn.close();
+      } catch (SQLException ex) {
+        plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
+      }
+    }
+    return null;
+  }
+
+  public void setEndPosition(String eventId, int posX, int posY, int posZ, int margin) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    try {
+      String statement = """
+            UPDATE events
+            SET end_x = ?,
+                end_y = ?,
+                end_z = ?,
+                end_margin = ?
+            WHERE event_id = ?
+          """;
+
+      conn = getSQLConnection();
+      ps = conn.prepareStatement(statement.trim());
+      ps.setInt(1, posX);
+      ps.setInt(2, posY);
+      ps.setInt(3, posZ);
+      ps.setInt(4, margin);
+      ps.setString(5, eventId);
+      ps.executeUpdate();
+    } catch (SQLException ex) {
+      plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+    } finally {
+      try {
+        if (ps != null)
+          ps.close();
+        if (conn != null)
+          conn.close();
+      } catch (SQLException ex) {
+        plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
+      }
+    }
+    return;
+  }
+
+  public TimerPosition getEndPosition(String eventId) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    try {
+      String statement = """
+          SELECT end_x, end_y, end_z, end_margin
+          FROM events
+          WHERE event_id = ?""";
+
+      conn = getSQLConnection();
+      ps = conn.prepareStatement(statement.trim());
+      ps.setString(1, eventId);
+      rs = ps.executeQuery();
+
+      int i = 0;
+      while (rs.next()) {
+        plugin.getLogger().info("in while loop, " + i++);
+        return new TimerPosition(
+            rs.getInt("end_x"),
+            rs.getInt("end_y"),
+            rs.getInt("end_z"),
+            rs.getInt("end_margin"));
       }
       return null;
     } catch (SQLException ex) {
