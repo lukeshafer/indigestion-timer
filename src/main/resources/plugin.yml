@@ -4,3 +4,26 @@ version: "1.0"
 api-version: "1.20"
 description: Timer for the lil_indigestion minecraft server
 author: SnailyLuke
+commands:
+  createtimerevent:
+    description: Create an event to run timers for
+    usage: /createtimerevent <event-id>
+    permission: indicards.createtimerevent
+  settimereventname:
+    description: Set/update the event name for an existing event
+    usage: /settimereventname <event-id> <name> (name can be multiple words)
+    permission: indicards.settimereventname
+  gettimereventname:
+    description: Gets the event name for an existing event
+    usage: /gettimereventname <event-id>
+    permission: indicards.gettimereventname
+permissions:
+  indicards.createtimerevent:
+    description: Allows createtimerevent command
+    default: op
+  indicards.settimereventname:
+    description: Allows settimereventname command
+    default: op
+  indicards.gettimereventname:
+    description: Allows gettimereventname command
+    default: op
