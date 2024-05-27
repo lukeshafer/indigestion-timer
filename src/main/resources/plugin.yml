@@ -25,6 +25,30 @@ commands:
     description: Sets the start position for a timer event
     usage: /settimereventend <event-id> [<margin>]
     permission: indicards.settimereventend
+  starttimer:
+    description: Starts a timer
+    usage: /starttimer <event-id>
+    permission: indicards.starttimer
+  stoptimer:
+    description: Stops a timer
+    usage: /stoptimer <event-id>
+    permission: indicards.stoptimer
+  getbesttime:
+    description: Get your best time in an event
+    usage: /getbesttime <event-id>
+    permission: indicards.getbesttime
+  getfirsttime:
+    description: Get your first time in an event
+    usage: /getfirsttime <event-id>
+    permission: indicards.getfirsttime
+  geteventbesttimes:
+    description: Get list of best times for an event
+    usage: /geteventbesttimes <event-id>
+    permission: indicards.geteventbesttimes
+  updatetimerusername:
+    description: Update username for saved times
+    usage: /updatetimerusername
+    permission: indicards.geteventbesttimes
 permissions:
   indicards.createtimerevent:
     description: Allows createtimerevent command
@@ -41,3 +65,21 @@ permissions:
   indicards.settimereventend:
     description: Allows settimereventend command
     default: op
+  indicards.starttimer:
+    description: Allows starttimer command
+    default: true # anyone can use
+  indicards.stoptimer:
+    description: Allows stoptimer command
+    default: true # anyone can use
+  indicards.getbesttime:
+    description: Allows getbesttime command
+    default: true # anyone can use
+  indicards.getfirsttime:
+    description: Allows getfirsttime command
+    default: true # anyone can use
+  indicards.geteventbesttimes:
+    description: Allows geteventbesttimes command
+    default: op
+  indicards.updatetimerusername:
+    description: Allows updatetimerusername command
+    default: true

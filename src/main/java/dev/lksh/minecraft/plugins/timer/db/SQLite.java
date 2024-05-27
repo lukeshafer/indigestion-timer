@@ -42,6 +42,8 @@ public class SQLite extends Database {
       CREATE TABLE IF NOT EXISTS event_players (
         event_id TEXT NOT NULL,
         player_uuid TEXT NOT NULL,
+        current_time_start INTEGER,
+        player_username TEXT NOT NULL,
         first_time_id TEXT,
         best_time_id TEXT,
         PRIMARY KEY (event_id, player_uuid),

@@ -29,7 +29,7 @@ public class CreateEventCommand implements CommandExecutor {
     String eventId = args[0];
     plugin.getDatabase().createTimerEvent(eventId);
 
-    sender.sendMessage("Created Event '" + eventId + "'. You may want to run /setEventName, /setStartPos, and /setEndPos for the event.");
+    sender.sendMessage("Created Event '" + eventId + "'. You may want to run /settimereventname, /settimereventstart, and /settimereventend for the event.");
     return true;
   }
 
