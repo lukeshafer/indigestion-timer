@@ -45,6 +45,10 @@ commands:
     description: Get list of best times for an event
     usage: /geteventbesttimes <event-id>
     permission: indicards.geteventbesttimes
+  geteventfirsttimes:
+    description: Get list of best times for an event
+    usage: /geteventfirsttimes <event-id>
+    permission: indicards.geteventfirsttimes
   updatetimerusername:
     description: Update username for saved times
     usage: /updatetimerusername
@@ -79,6 +83,9 @@ permissions:
     default: true # anyone can use
   indicards.geteventbesttimes:
     description: Allows geteventbesttimes command
+    default: op
+  indicards.geteventfirsttimes:
+    description: Allows geteventfirsttimes command
     default: op
   indicards.updatetimerusername:
     description: Allows updatetimerusername command

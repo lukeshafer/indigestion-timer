@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import dev.lksh.minecraft.plugins.timer.commands.CreateEventCommand;
 import dev.lksh.minecraft.plugins.timer.commands.GetBestTimeCommand;
 import dev.lksh.minecraft.plugins.timer.commands.GetEventBestTimesCommand;
+import dev.lksh.minecraft.plugins.timer.commands.GetEventFirstTimesCommand;
 import dev.lksh.minecraft.plugins.timer.commands.GetFirstTimeCommand;
 import dev.lksh.minecraft.plugins.timer.commands.SetEventNameCommand;
 import dev.lksh.minecraft.plugins.timer.commands.SetEventStartPositionCommand;
@@ -37,6 +38,7 @@ public class IndigestionTimer extends JavaPlugin implements Listener {
     getCommand("getbesttime").setExecutor(new GetBestTimeCommand(this));
     getCommand("getfirsttime").setExecutor(new GetFirstTimeCommand(this));
     getCommand("geteventbesttimes").setExecutor(new GetEventBestTimesCommand(this));
+    getCommand("geteventfirsttimes").setExecutor(new GetEventFirstTimesCommand(this));
     getCommand("updatetimerusername").setExecutor(new UpdateUsernameCommand(this));
 
     db = new SQLite(this);
@@ -48,30 +50,14 @@ public class IndigestionTimer extends JavaPlugin implements Listener {
   }
 
   public final String formatTime(long timeMS) {
-    // getLogger().info("Time in milliseconds: " + timeMS);
-
     var timeSEC = Math.floorDiv(timeMS, 1000);
-    // getLogger().info("Time in seconds: " + timeSEC);
-
     var remMS = timeMS % 1000;
-    // getLogger().info("Millisecond remainder: " + remMS);
-
     var timeMIN = Math.floorDiv(timeSEC, 60);
-    // getLogger().info("Time in minutes: " + timeMIN);
-
     var remSEC = timeSEC % 60;
-    // getLogger().info("Seconds remaing: " + remSEC);
-
     var stringMIN = String.format("%2s", timeMIN).replace(' ', '0');
     var stringSEC = String.format("%2s", remSEC).replace(' ', '0');
     var stringMS = String.format("%3s", remMS).replace(' ', '0');
 
     return stringMIN + ":" + stringSEC + "." + stringMS;
   }
-
-  @EventHandler
-  public void onPlayerJoin(PlayerJoinEvent event) {
-    event.getPlayer().sendMessage(Component.text("Hello, " + event.getPlayer().getName() + "!"));
-  }
-
 }

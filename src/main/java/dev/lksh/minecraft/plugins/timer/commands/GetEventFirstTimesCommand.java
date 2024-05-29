@@ -11,11 +11,12 @@ import dev.lksh.minecraft.plugins.timer.utils.TimeComparator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
-public class GetEventBestTimesCommand implements CommandExecutor {
+public class GetEventFirstTimesCommand implements CommandExecutor {
   private final IndigestionTimer plugin;
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
     if (!(sender instanceof Player)) {
       sender.sendMessage("You must be a player to use this command.");
       return true;
@@ -38,25 +39,24 @@ public class GetEventBestTimesCommand implements CommandExecutor {
 
     int start = (page - 1) * 10;
 
-    var bestTimes = plugin.getDatabase().getBestTimes(eventId);
+    var times = plugin.getDatabase().getFirstTimes(eventId);
 
-    if (bestTimes.size() == 0) {
+    if (times.size() == 0) {
       player.sendMessage("No times have been recorded for event " + eventId);
       return true;
     }
 
-    if ((start + 1) > bestTimes.size()) {
+    if ((start + 1) > times.size()) {
       player.sendMessage("The specified page" + page + "does not exist");
       return true;
     }
 
-    int end = Math.min(start + 10, bestTimes.size());
+    int end = Math.min(start + 10, times.size());
 
-    bestTimes.sort(new TimeComparator());
+    times.sort(new TimeComparator());
 
     for (int i = start; i < end; i++) {
-      plugin.getLogger().info("loop: " + i);
-      TimeResult timeResult = bestTimes.get(i);
+      TimeResult timeResult = times.get(i);
       String rankSuffix = "th";
       int rank = i + 1;
       if (rank % 10 == 1 && rank % 100 != 11) {
@@ -70,16 +70,16 @@ public class GetEventBestTimesCommand implements CommandExecutor {
           .sendMessage(rank + rankSuffix + ": " + timeResult.username + ", " + plugin.formatTime(timeResult.timeInMS));
     }
 
-    if (end < (bestTimes.size() - 1)) {
+    if (end < (times.size() - 1)) {
       player.sendMessage(Component.text().content("There are more results to view.").color(NamedTextColor.GREEN));
       player.sendMessage(
-          Component.text().content("/geteventbesttimes " + eventId + " " + page + 1).color(NamedTextColor.AQUA));
+          Component.text().content("/geteventfirsttimes " + eventId + " " + page + 1).color(NamedTextColor.AQUA));
     }
 
     return true;
   }
 
-  public GetEventBestTimesCommand(IndigestionTimer plugin) {
+  public GetEventFirstTimesCommand(IndigestionTimer plugin) {
     this.plugin = plugin;
   }
 }
