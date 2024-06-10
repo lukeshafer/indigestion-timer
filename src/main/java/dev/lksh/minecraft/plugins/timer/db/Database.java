@@ -2,6 +2,7 @@ package dev.lksh.minecraft.plugins.timer.db;
 
 import dev.lksh.minecraft.plugins.timer.IndigestionTimer;
 import dev.lksh.minecraft.plugins.timer.types.TimeResult;
+import dev.lksh.minecraft.plugins.timer.types.TimerEventPlayer;
 import dev.lksh.minecraft.plugins.timer.types.TimerPosition;
 // YOU MUST IMPORT THE CLASS ERROR, AND ERRORS!!!
 import java.sql.Connection;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
-
 import org.bukkit.entity.Player;
 
 public abstract class Database {
@@ -31,7 +31,8 @@ public abstract class Database {
   public void initialize() {
     connection = getSQLConnection();
     try {
-      PreparedStatement ps = connection.prepareStatement("SELECT * FROM events WHERE event_name = ?");
+      PreparedStatement ps =
+          connection.prepareStatement("SELECT * FROM events WHERE event_name = ?");
       ResultSet rs = ps.executeQuery();
       close(ps, rs);
 
@@ -52,10 +53,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -76,10 +75,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -108,10 +105,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -123,7 +118,8 @@ public abstract class Database {
     Connection conn = null;
     PreparedStatement ps = null;
     try {
-      String statement = """
+      String statement =
+          """
             UPDATE events
             SET start_x = ?,
                 start_y = ?,
@@ -144,10 +140,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -160,7 +154,8 @@ public abstract class Database {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      String statement = """
+      String statement =
+          """
           SELECT start_x, start_y, start_z, start_margin
           FROM events
           WHERE event_id = ?""";
@@ -182,10 +177,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -197,7 +190,8 @@ public abstract class Database {
     Connection conn = null;
     PreparedStatement ps = null;
     try {
-      String statement = """
+      String statement =
+          """
             UPDATE events
             SET end_x = ?,
                 end_y = ?,
@@ -218,10 +212,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -234,7 +226,8 @@ public abstract class Database {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      String statement = """
+      String statement =
+          """
           SELECT end_x, end_y, end_z, end_margin
           FROM events
           WHERE event_id = ?""";
@@ -246,20 +239,15 @@ public abstract class Database {
 
       while (rs.next()) {
         return new TimerPosition(
-            rs.getInt("end_x"),
-            rs.getInt("end_y"),
-            rs.getInt("end_z"),
-            rs.getInt("end_margin"));
+            rs.getInt("end_x"), rs.getInt("end_y"), rs.getInt("end_z"), rs.getInt("end_margin"));
       }
       return null;
     } catch (SQLException ex) {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -273,7 +261,9 @@ public abstract class Database {
     ResultSet rs = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("SELECT player_uuid FROM event_players WHERE event_id = ? AND player_uuid = ?");
+      ps =
+          conn.prepareStatement(
+              "SELECT player_uuid FROM event_players WHERE event_id = ? AND player_uuid = ?");
       ps.setString(1, eventId);
       ps.setString(2, player.getUniqueId().toString());
       rs = ps.executeQuery();
@@ -282,10 +272,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -298,7 +286,10 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("INSERT INTO event_players (event_id, player_uuid, player_username) VALUES (?, ?, ?)");
+      ps =
+          conn.prepareStatement(
+              "INSERT INTO event_players (event_id, player_uuid, player_username) VALUES (?, ?,"
+                  + " ?)");
       ps.setString(1, eventId);
       ps.setString(2, player.getUniqueId().toString());
       ps.setString(3, player.getName());
@@ -307,10 +298,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -323,7 +312,9 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("UPDATE event_players SET player_username = ? WHERE player_uuid = ?");
+      ps =
+          conn.prepareStatement(
+              "UPDATE event_players SET player_username = ? WHERE player_uuid = ?");
       ps.setString(1, player.getName());
       ps.setString(2, player.getUniqueId().toString());
       ps.executeUpdate();
@@ -331,10 +322,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -347,11 +336,13 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("""
-            UPDATE event_players
-            SET current_time_start = ?
-            WHERE event_id = ? AND player_uuid = ?
-          """);
+      ps =
+          conn.prepareStatement(
+              """
+                UPDATE event_players
+                SET current_time_start = ?
+                WHERE event_id = ? AND player_uuid = ?
+              """);
       ps.setLong(1, time);
       ps.setString(2, eventId);
       ps.setString(3, player.getUniqueId().toString());
@@ -360,10 +351,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -377,7 +366,10 @@ public abstract class Database {
     ResultSet rs = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("SELECT current_time_start FROM event_players WHERE event_id = ? AND player_uuid = ?");
+      ps =
+          conn.prepareStatement(
+              "SELECT current_time_start FROM event_players WHERE event_id = ? AND player_uuid ="
+                  + " ?");
       ps.setString(1, eventId);
       ps.setString(2, player.getUniqueId().toString());
       rs = ps.executeQuery();
@@ -388,10 +380,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -404,8 +394,10 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement(
-          "INSERT INTO event_times (event_id, player_uuid, time_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)");
+      ps =
+          conn.prepareStatement(
+              "INSERT INTO event_times (event_id, player_uuid, time_id, start_time, end_time)"
+                  + " VALUES (?, ?, ?, ?, ?)");
       ps.setString(1, eventId);
       ps.setString(2, player.getUniqueId().toString());
       UUID id = UUID.randomUUID();
@@ -418,10 +410,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -435,7 +425,9 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("UPDATE event_players SET best_time_id = ? WHERE event_id = ? AND player_uuid = ?");
+      ps =
+          conn.prepareStatement(
+              "UPDATE event_players SET best_time_id = ? WHERE event_id = ? AND player_uuid = ?");
       ps.setString(1, time_id);
       ps.setString(2, eventId);
       ps.setString(3, player.getUniqueId().toString());
@@ -444,10 +436,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -460,7 +450,9 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn.prepareStatement("UPDATE event_players SET first_time_id = ? WHERE event_id = ? AND player_uuid = ?");
+      ps =
+          conn.prepareStatement(
+              "UPDATE event_players SET first_time_id = ? WHERE event_id = ? AND player_uuid = ?");
       ps.setString(1, time_id);
       ps.setString(2, eventId);
       ps.setString(3, player.getUniqueId().toString());
@@ -469,10 +461,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -485,8 +475,10 @@ public abstract class Database {
     PreparedStatement ps = null;
     try {
       conn = getSQLConnection();
-      ps = conn
-          .prepareStatement("UPDATE event_players SET current_time_start = ? WHERE event_id = ? AND player_uuid = ?");
+      ps =
+          conn.prepareStatement(
+              "UPDATE event_players SET current_time_start = ? WHERE event_id = ? AND player_uuid ="
+                  + " ?");
       ps.setNull(1, java.sql.Types.INTEGER);
       ps.setString(2, eventId);
       ps.setString(3, player.getUniqueId().toString());
@@ -495,10 +487,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -511,7 +501,8 @@ public abstract class Database {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      String statement = """
+      String statement =
+          """
                 SELECT start_time, end_time
                 FROM event_times
                 INNER JOIN event_players ON event_times.time_id = event_players.best_time_id
@@ -532,10 +523,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -548,7 +537,8 @@ public abstract class Database {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      String statement = """
+      String statement =
+          """
                 SELECT start_time, end_time
                 FROM event_times
                 INNER JOIN event_players ON event_times.time_id = event_players.first_time_id
@@ -569,10 +559,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -586,7 +574,8 @@ public abstract class Database {
     ResultSet rs = null;
     List<TimeResult> times = new ArrayList<>();
     try {
-      String statement = """
+      String statement =
+          """
                 SELECT start_time, end_time, player_username
                 FROM event_times
                 INNER JOIN event_players ON event_times.time_id = event_players.best_time_id
@@ -611,10 +600,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -628,7 +615,8 @@ public abstract class Database {
     ResultSet rs = null;
     List<TimeResult> times = new ArrayList<>();
     try {
-      String statement = """
+      String statement =
+          """
                 SELECT start_time, end_time, player_username
                 FROM event_times
                 INNER JOIN event_players ON event_times.time_id = event_players.first_time_id
@@ -653,10 +641,8 @@ public abstract class Database {
       plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
     } finally {
       try {
-        if (ps != null)
-          ps.close();
-        if (conn != null)
-          conn.close();
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
       } catch (SQLException ex) {
         plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
       }
@@ -664,12 +650,41 @@ public abstract class Database {
     return times;
   }
 
+  public final TimerEventPlayer getPlayerInfo(String eventId, Player player) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    try {
+      conn = getSQLConnection();
+      ps =
+          conn.prepareStatement(
+              "SELECT * FROM event_players WHERE event_id = ? AND player_uuid = ?");
+      ps.setString(1, eventId);
+      ps.setString(2, player.getUniqueId().toString());
+      rs = ps.executeQuery();
+      while (rs.next()) {
+        var currentTimeStart = rs.getLong("current_time_start");
+        var firstTimeId = rs.getString("first_time_id");
+        var bestTimeId = rs.getString("best_time_id");
+        return new TimerEventPlayer(eventId, player, currentTimeStart, firstTimeId, bestTimeId);
+      }
+    } catch (SQLException ex) {
+      plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+    } finally {
+      try {
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
+      } catch (SQLException ex) {
+        plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
+      }
+    }
+    return null;
+  }
+
   public void close(PreparedStatement ps, ResultSet rs) {
     try {
-      if (ps != null)
-        ps.close();
-      if (rs != null)
-        rs.close();
+      if (ps != null) ps.close();
+      if (rs != null) rs.close();
     } catch (SQLException ex) {
       Error.close(plugin, ex);
     }
